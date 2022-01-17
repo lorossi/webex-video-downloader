@@ -1,0 +1,17 @@
+{
+  "name": "Webex downloader",
+  "description": "Fuck Cisco",
+  "version": "1.0",
+  "manifest_version": 3,
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://politecnicomilano.webex.com/*"],
+      "js": ["content.js"]
+    }
+  ],
+  "permissions": ["tabs", "activeTab", "webRequest", "downloads"],
+  "host_permissions": ["https://politecnicomilano.webex.com/*"]
+}
