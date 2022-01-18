@@ -13,7 +13,9 @@ For now it's only compatible with Google Chrome, but feel free to fork and PR th
 * Click "Load unpacked extension..." on the top left
 * Select the folder to which your zip file was extracted.
 
-# Usage
-Just click on the download icon. The extension prepends the date in ISO 8601 format to the lesson title
+## Usage
+
+Just click on the download icon.
+The extension prepends the date in ISO 8601 format to the lesson title
 
 ![img](/images/img.png)
