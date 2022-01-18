@@ -35,16 +35,26 @@ const formatTitle = (data) => {
  *
  * @param {obj} data
  */
-const prepareDownload = (data) => {
+const createDownloadButton = (data) => {
   const title = formatTitle(data);
   const container = document.querySelector(".recordingHeader");
-  const button = document.createElement("button");
+  const button = document.createElement("div");
 
-  button.innerHTML = "download";
   button.id = "download-video";
   // video url and title are set as attributes on the button
   button.setAttribute("download-url", data.fallbackPlaySrc);
   button.setAttribute("download-filename", title);
+  button.style.backgroundImage = `url(${chrome.runtime.getURL(
+    "images/download.png"
+  )})`;
+  button.style.position = "relative";
+  button.style.display = "inline-block";
+  button.style.height = "26px";
+  button.style.marginLeft = "13px";
+  button.style.aspectRatio = 1;
+  button.style.backgroundSize = "contain";
+  button.style.backgroundRepeat = "no-repeat";
+  button.style.cursor = "pointer";
   container.appendChild(button);
 
   button.addEventListener("click", passDownloadOptions);
@@ -52,5 +62,5 @@ const prepareDownload = (data) => {
 
 // listener for message handler - used to communicate from background to content
 chrome.runtime.onMessage.addListener((message) => {
-  if (message.action == "prepare-download") prepareDownload(message.data);
+  if (message.action == "prepare-download") createDownloadButton(message.data);
 });

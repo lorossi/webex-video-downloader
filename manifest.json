@@ -13,5 +13,11 @@
     }
   ],
   "permissions": ["tabs", "activeTab", "webRequest", "downloads"],
-  "host_permissions": ["https://politecnicomilano.webex.com/*"]
+  "host_permissions": ["https://politecnicomilano.webex.com/*"],
+  "web_accessible_resources": [
+    {
+      "resources": ["images/download.png"],
+      "matches": ["https://politecnicomilano.webex.com/*"]
+    }
+  ]
 }
