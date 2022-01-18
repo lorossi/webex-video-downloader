@@ -29,7 +29,7 @@ const getData = async (url) => {
   const content = await fetch(url);
   try {
     return content.json();
-  } catch (SyntaxError) {
+  } catch (E) {
     return "";
   }
 };
@@ -99,7 +99,7 @@ const removeElaborated = (tab_id) => {
   elaborated_tab_ids.splice(elaborated_tab_ids.indexOf(tab_id), 1);
 };
 
-// listener
+// request listener
 chrome.webRequest.onCompleted.addListener(passRequest, {
   urls: ["https://politecnicomilano.webex.com/*"],
 });

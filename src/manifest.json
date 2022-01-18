@@ -1,7 +1,7 @@
 {
   "name": "Polimi Webex Downloader",
   "description": "Download Politecnico di Milano lessons from Cisco Webex.",
-  "version": "0.1",
+  "version": "0.1.1",
   "manifest_version": 3,
   "background": {
     "service_worker": "background.js"
@@ -12,12 +12,15 @@
       "js": ["content.js"]
     }
   ],
-  "permissions": ["tabs", "activeTab", "webRequest", "downloads"],
+  "permissions": ["tabs", "activeTab", "webRequest", "downloads", "storage"],
   "host_permissions": ["https://politecnicomilano.webex.com/*"],
   "web_accessible_resources": [
     {
       "resources": ["images/download.png"],
       "matches": ["https://politecnicomilano.webex.com/*"]
     }
-  ]
+  ],
+  "action": {
+    "default_popup": "popup/popup.html"
+  }
 }
