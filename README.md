@@ -1,10 +1,11 @@
-# Polimi Webex Downloader 
+# Polimi Webex Downloader
+
 Since a webex update broke [the extension that we were using to download polimi lessons from webex](https://github.com/jacopo-j/WebXDownloader), i decided to write a new extension **that does not rely on url matching.**
 
-For now it's only compatible with Google Chome, but feel free to fork and PR the compatiblity with other browsers.
+For now it's only compatible with Google Chrome, but feel free to fork and PR the compatibility with other browsers.
 
+## Install (Chrome)
 
-# Install (Chrome)
 * Download the `.zip` file clicking [**here**](https://github.com/lorossi/polimi-webex-downloader/archive/refs/heads/main.zip)
 * Extract the zip file
 * Browse to `chrome://extensions`
