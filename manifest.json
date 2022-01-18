@@ -1,6 +1,6 @@
 {
-  "name": "Webex downloader",
-  "description": "Fuck Cisco",
+  "name": "Polimi Webex Downloader",
+  "description": "Download Politecnico di Milano lessons from Cisco Webex.",
   "version": "0.1",
   "manifest_version": 3,
   "background": {
