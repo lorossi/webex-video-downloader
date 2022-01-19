@@ -21,12 +21,37 @@ const getLatestVersion = async () => {
 const getCurrentVersion = () => `v${chrome.runtime.getManifest().version}`;
 
 /**
+ *
+ * @param {str} version_1
+ * @param {str} version_2
+ * @returns {bool} true if version_1 if newer than version 2
+ */
+const checkNewVersion = (version_1, version_2) => {
+  // new
+  const n = version_1
+    .replace("v", "")
+    .split(".")
+    .map((i) => parseInt(i));
+  // old
+  const o = version_2
+    .replace("v", "")
+    .split(".")
+    .map((i) => parseInt(i));
+
+  for (let i = 0; i < 3; i++) {
+    if (n[i] > o[i]) return true;
+  }
+
+  return false;
+};
+
+/**
  * Check if a new version has come out and if so updates the span in the popup
  */
 const checkUpdate = async () => {
   const last_version = await getLatestVersion();
   const current_version = getCurrentVersion();
-  if (current_version != last_version) {
+  if (checkNewVersion(last_version, current_version)) {
     const update_span = document.querySelector("#updateavailable");
     update_span.innerHTML = "New version available";
     update_span.href =
