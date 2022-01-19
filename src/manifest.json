@@ -4,12 +4,12 @@
   "version": "0.1.1",
   "manifest_version": 3,
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "background/background.js"
   },
   "content_scripts": [
     {
       "matches": ["https://politecnicomilano.webex.com/*"],
-      "js": ["content.js"]
+      "js": ["content/content.js"]
     }
   ],
   "permissions": ["tabs", "activeTab", "webRequest", "downloads", "storage"],
