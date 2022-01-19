@@ -25,5 +25,10 @@
   ],
   "action": {
     "default_popup": "popup/popup.html"
+  },
+  "icons": {
+    "16": "images/logo/logo16.png",
+    "48": "images/logo/logo48.png",
+    "128": "images/logo/logo128.png"
   }
 }
