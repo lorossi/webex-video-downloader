@@ -1,7 +1,7 @@
 {
   "name": "Polimi Webex Downloader",
   "description": "Download Politecnico di Milano lessons from Cisco Webex.",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "manifest_version": 3,
   "background": {
     "service_worker": "background/background.js"

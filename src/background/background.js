@@ -2,24 +2,6 @@ let request_queue = new Array(0); // urls to get
 let elaborated_tab_ids = new Array(0); // tabs in which the button was added
 
 /**
- *
- * @param {int} [null] video id to get
- * @returns array of tabs
- */
-const getCurrentTab = async (video_id = null) => {
-  let queryOptions;
-  if (video_id != null) {
-    queryOptions = {
-      currentWindow: true,
-      url: `https://politecnicomilano.webex.com/recordingservice/sites/politecnicomilano/recording/${video_id}*`,
-    };
-  } else {
-    queryOptions = { active: true, currentWindow: true };
-  }
-  return await chrome.tabs.query(queryOptions);
-};
-
-/**
  * Makes a request via fetch() and returns parsed JSON
  *
  * @param {str} url
@@ -53,15 +35,24 @@ const passRequest = async (request) => {
     // extract video id
     const video_id = request.url.split("/").slice(-2, -1)[0];
     // extract list of available tab
-    const tabs = await getCurrentTab(video_id);
+    const tabs = await chrome.tabs.query({});
 
     // loop through tabs and find one that has not been already elaborated
+    // and contains the video url
+    // keep looking until found
     let tab_id;
-    for (let i = 0; i < tabs.length; i++) {
-      if (!elaborated_tab_ids.includes(tabs[i].id)) {
-        tab_id = tabs[i].id;
-        elaborated_tab_ids.push(tab_id);
-        break;
+    let not_found = true;
+    while (not_found) {
+      for (let i = 0; i < tabs.length; i++) {
+        if (
+          !elaborated_tab_ids.includes(tabs[i].id) &&
+          tabs[i].url.includes(video_id)
+        ) {
+          tab_id = tabs[i].id;
+          elaborated_tab_ids.push(tab_id);
+          not_found = false;
+          break;
+        }
       }
     }
 
