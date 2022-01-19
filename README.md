@@ -11,22 +11,23 @@ I am currently focused on making it better, so shall you find any bug, [open an 
 
 #### First way
 
-* Directly download the `.crx` file from [here](https://github.com/lorossi/webex-downloader/blob/4b8668f98d76e182a3b05520d30f8c9afd69fd7a/bin/polimi-webex-downloader-v0.1.1.crx) or extract it from the zipped archive that you can download [here](https://github.com/lorossi/polimi-webex-downloader/archive/refs/heads/main.zip)
-* Click on the file
+* Directly download the `.crx` file from [here](https://github.com/lorossi/polimi-webex-downloader/releases/latest)
+* Click on the file or drag into a chrome window
 * Chrome might be a little bit angry at you but will install the plugin
 
 #### Second way
 
-* Download the `.zip` file clicking [here](https://github.com/lorossi/polimi-webex-downloader/archive/refs/heads/main.zip)
-* Extract the zip file
-* Browse to `chrome://extensions`
-* Turn on "Developer mode" on the top right
-* Click "Load unpacked extension..." on the top left
-* Select the folder to which your zip file was extracted.
+* Download the `.zip` file from [here](https://github.com/lorossi/polimi-webex-downloader/releases/latest)
+* Extract the `.zip` file
+* Navigate to `chrome://extensions`
+* Turn on "Developer mode" on the top right corner
+* Click "Load unpacked extension..." on the top left corner
+* Select the folder to which your zip file was extracted
 
 ### Firefox
 
-* *Currently WIP*
+As it turns out, Firefox is not really compatible with Google Chrome's extensions manifest version 3, so there is not really much I can do about it.
+Unless a new update is rolled out soon, I can't port this extension to Firefox.
 
 ## Usage
 
@@ -51,7 +52,8 @@ If neither option is selected, filename will be the elapsed seconds since *Janua
 * Do some (more) testing
 * Implement a blockchain based, machine learning trained, big data fed AI to improve download speeds
 * Avoid inevitable Cisco's cease and desist by running to Panama
-* Add an icon
+* ~~Add an icon~~
+  * done, but it's pretty bad
 
 ## Known bugs
 
