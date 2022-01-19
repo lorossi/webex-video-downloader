@@ -9,7 +9,15 @@ I am currently focused on making it better, so shall you find any bug, [open an 
 
 ### Chrome
 
-* Download the `.zip` file clicking [**here**](https://github.com/lorossi/polimi-webex-downloader/archive/refs/heads/main.zip)
+#### First way
+
+* Directly download the `.crx` file from [here](https://github.com/lorossi/webex-downloader/blob/4b8668f98d76e182a3b05520d30f8c9afd69fd7a/bin/polimi-webex-downloader-v0.1.1.crx) or extract it from the zipped archive that you can download [here](https://github.com/lorossi/polimi-webex-downloader/archive/refs/heads/main.zip)
+* Click on the file
+* Chrome might be a little bit angry at you but will install the plugin
+
+#### Second way
+
+* Download the `.zip` file clicking [here](https://github.com/lorossi/polimi-webex-downloader/archive/refs/heads/main.zip)
 * Extract the zip file
 * Browse to `chrome://extensions`
 * Turn on "Developer mode" on the top right
