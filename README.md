@@ -11,14 +11,16 @@ I am currently focused on making it better, so shall you find any bug, [open an 
 
 #### First way
 
-* Directly download the `.crx` file from [here](https://github.com/lorossi/polimi-webex-downloader/releases/latest)
+* Directly download the `.crx` file by clicking [here](https://github.com/lorossi/polimi-webex-downloader/releases/latest)
+  * Older version are in the `bin` folder or the repo, available also [here](https://github.com/lorossi/webex-downloader/blob/4b8668f98d76e182a3b05520d30f8c9afd69fd7a/bin)
 * Click on the file or drag into a chrome window
 * Chrome might be a little bit angry at you but will install the plugin
 
 #### Second way
 
-* Download the `.zip` file from [here](https://github.com/lorossi/polimi-webex-downloader/releases/latest)
+* Download the `.zip` file by clicking [here](https://github.com/lorossi/polimi-webex-downloader/releases/latest)
 * Extract the `.zip` file
+  * Otherwise, clone the repo and consider the `src` folder
 * Navigate to `chrome://extensions`
 * Turn on "Developer mode" on the top right corner
 * Click "Load unpacked extension..." on the top left corner
