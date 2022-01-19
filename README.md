@@ -24,7 +24,7 @@ I am currently focused on making it better, so shall you find any bug, [open an 
 
 Just click on the download icon, as shown in the image.
 
-![img](/images/img.png)
+![img](/images/how_to_download.png)
 
 Currently there are two options, available by clicking the extension's icon:
 
