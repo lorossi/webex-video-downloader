@@ -13,7 +13,10 @@
     }
   ],
   "permissions": ["tabs", "activeTab", "webRequest", "downloads", "storage"],
-  "host_permissions": ["https://politecnicomilano.webex.com/*"],
+  "host_permissions": [
+    "https://politecnicomilano.webex.com/*",
+    "https://github.com/lorossi/polimi-webex-downloader/releases/"
+  ],
   "web_accessible_resources": [
     {
       "resources": ["images/download.png"],

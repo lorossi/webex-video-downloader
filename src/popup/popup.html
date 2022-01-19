@@ -3,12 +3,15 @@
     <link rel="stylesheet" href="popup.css" />
   </head>
   <body>
-    <p>Plugin version: v0.1.1</p>
+    <div class="versions">
+      <p>Plugin version: <span id="currentversion"></span></p>
+      <a id="updateavailable"></a>
+    </div>
 
-    <div>
+    <div class="form">
       Download options:
 
-      <div>
+      <div class="inputs">
         <input type="checkbox" id="filename-date" name="date" />
         <label for="date">Add recording date to filename</label>
       </div>
