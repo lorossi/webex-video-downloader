@@ -9,15 +9,6 @@ I am currently focused on making it better, so shall you find any bug, [open an 
 
 ### Chrome
 
-#### First way
-
-* Directly download the `.crx` file by clicking [here](https://github.com/lorossi/polimi-webex-downloader/releases/latest)
-  * Older version are in the `bin` folder or the repo, also available [here](https://github.com/lorossi/polimi-webex-downloader/tree/main/bin)
-* Click on the file or drag into a chrome window
-* Chrome might be a little bit angry at you but will install the plugin
-
-#### Second way
-
 * Download the `.zip` file by clicking [here](https://github.com/lorossi/polimi-webex-downloader/releases/latest)
 * Extract the `.zip` file
   * Otherwise, clone the repo and consider the `src` folder
