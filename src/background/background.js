@@ -30,13 +30,13 @@ const getTab = (video_id, old_tabs) => {
     // loop through tabs and find one that has not been already elaborated
     // and contains the video url
     // keep looking until found
-    while (true) {
-      for (let i = 0; i < tabs.length; i++) {
-        if (!old_tabs.includes(tabs[i].id) && tabs[i].url.includes(video_id)) {
-          return tabs[i].id;
-        }
+    for (let i = 0; i < tabs.length; i++) {
+      if (!old_tabs.includes(tabs[i].id) && tabs[i].url.includes(video_id)) {
+        return tabs[i].id;
       }
     }
+
+    return null;
   });
 };
 
@@ -60,31 +60,22 @@ const passRequest = async (request) => {
     const video_id = request.url.split("/").slice(-2, -1)[0];
     // find tab id
     const tab_id = await getTab(video_id, elaborated_tab_ids);
-    // add tab id to list of already elaborated tabs
-    elaborated_tab_ids.push(tab_id);
+    // sometimes tabs don't get loaded. Just go on and do nothing
+    // TODO might find a smarter way to do this (maybe wait?)
+    if (tab_id) {
+      // add tab id to list of already elaborated tabs
+      elaborated_tab_ids.push(tab_id);
 
-    // pass message to tab
-    chrome.tabs.sendMessage(tab_id, {
-      action: "prepare-download",
-      data: data,
-    });
+      // pass message to tab
+      chrome.tabs.sendMessage(tab_id, {
+        action: "prepare-download",
+        data: data,
+      });
+    }
 
     // remove url from queue, so that it can be loaded again in the future
     request_queue.splice(request_queue.indexOf(request.url), 1);
   }
-};
-
-/**
- * Download file, provided url and filename
- *
- * @param {str} url
- * @param {str} filename
- */
-const downloadFile = (url, filename) => {
-  chrome.downloads.download({
-    url: url,
-    filename: filename,
-  });
 };
 
 /**
@@ -98,15 +89,91 @@ const removeElaborated = (tab_id) => {
     elaborated_tab_ids.splice(elaborated_tab_ids.indexOf(tab_id), 1);
 };
 
+/**
+ *
+ * @returns {str} last published version
+ */
+const getLatestVersion = async () => {
+  const response = await fetch(
+    "https://api.github.com/repos/lorossi/polimi-webex-downloader/tags",
+    {
+      accept: "application/vnd.github.v3+json",
+      method: "GET",
+    }
+  );
+  const data = await response.json();
+  return data[0].name;
+};
+
+/**
+ * @returns {str} current version
+ *
+ */
+const getCurrentVersion = () => `v${chrome.runtime.getManifest().version}`;
+
+/**
+ * Check if an update is available by comparing the two versions
+ *
+ * @param {str} version_1
+ * @param {str} version_2
+ * @returns {bool} true if version_1 if newer than version 2
+ */
+const checkUpdateAvailable = (version_1, version_2) => {
+  const str_to_arr = (str) => {
+    return str
+      .concat(".0")
+      .replace("v", "")
+      .split(".")
+      .map((i) => parseInt(i));
+  };
+  // new
+  const v1 = str_to_arr(version_1);
+  // old
+  const v2 = str_to_arr(version_2);
+
+  for (let i = 0; i < 3; i++) {
+    if (v1[i] > v2[i]) return true;
+  }
+
+  return false;
+};
+
 // request listener
 chrome.webRequest.onCompleted.addListener(passRequest, {
   urls: ["https://politecnicomilano.webex.com/*"],
 });
 
 // listener for message handler - used to communicate from content to background
-chrome.runtime.onMessage.addListener((message) => {
-  if (message.action == "file-download")
-    downloadFile(message.url, message.filename);
+chrome.runtime.onMessage.addListener(async (message, sender) => {
+  switch (message.action) {
+    case "file-download":
+      // content asked to download a file
+      chrome.downloads.download({
+        url: message.url,
+        filename: message.filename,
+      });
+      break;
+
+    case "get-version":
+      // popup asked to get the current and latest version
+      const current_version = getCurrentVersion();
+      const latest_version = await getLatestVersion();
+      const update_available = await checkUpdateAvailable(
+        latest_version,
+        current_version
+      );
+      // send message to popup
+      chrome.runtime.sendMessage({
+        action: "version",
+        currentversion: current_version,
+        latestversion: latest_version,
+        updateavailable: update_available,
+      });
+      break;
+
+    default:
+      break;
+  }
 });
 
 // listener for closed tab

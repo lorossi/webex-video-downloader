@@ -15,7 +15,7 @@ const formatFilename = (data) => {
       let filename = [];
 
       // option to append date has been checked
-      if (v["filename-date"] === true) {
+      if (v["filename-date"]) {
         filename.push(
           new Date(data.createTime)
             .toISOString()
@@ -25,7 +25,7 @@ const formatFilename = (data) => {
       }
 
       // option ot append filename has been checked
-      if (v["filename-title"] === true) {
+      if (v["filename-title"]) {
         if (filename.length > 0) filename.push("-");
 
         filename.push(data.recordName);
