@@ -1,4 +1,4 @@
-# Polimi Webex Downloader
+# Webex video downloader
 
 Since a Webex update broke the marvelous [Jacopo J's](https://github.com/jacopo-j/) Chrome and Firefox [extension to download recorded Polimi lessons from Webex](https://github.com/jacopo-j/WebXDownloader), I decided to jump the gun and try write a new extension **that does not rely on url matching.**
 
