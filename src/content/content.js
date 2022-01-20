@@ -8,14 +8,13 @@ const formatFilename = (data) => {
   // filename options are set in popup.js
   return chrome.storage.local
     .get({
-      "filename-date": true,
-      "filename-title": true,
+      filename_date: true,
+      filename_title: true,
     })
     .then((v) => {
       let filename = [];
-
       // option to append date has been checked
-      if (v["filename-date"] === true) {
+      if (v.filename_date) {
         filename.push(
           new Date(data.createTime)
             .toISOString()
@@ -25,7 +24,7 @@ const formatFilename = (data) => {
       }
 
       // option ot append filename has been checked
-      if (v["filename-title"] === true) {
+      if (v.filename_title) {
         if (filename.length > 0) filename.push("-");
 
         filename.push(data.recordName);
@@ -79,7 +78,7 @@ const createDownloadButton = (data) => {
     formatFilename(data).then((filename) => {
       // message background worker to download the file
       chrome.runtime.sendMessage({
-        action: "file-download",
+        action: "file_download",
         url: url,
         filename: filename,
       });
@@ -87,7 +86,7 @@ const createDownloadButton = (data) => {
   });
 };
 
-// listener for message handler - used to communicate from background to content
+// listener for message handler _ used to communicate from background to content
 chrome.runtime.onMessage.addListener((message) => {
-  if (message.action == "prepare-download") createDownloadButton(message.data);
+  if (message.action == "prepare_download") createDownloadButton(message.data);
 });
