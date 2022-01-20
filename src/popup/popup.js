@@ -28,24 +28,35 @@ const main = () => {
   chrome.runtime.sendMessage({
     action: "get_version",
   });
+
   // select checkboxes from popup
-  const checkboxes = document.querySelectorAll("input[type=checkbox]");
+  const checkboxes = document.querySelectorAll(
+    ".filename input[type=checkbox]"
+  );
+  // map DOM elements ids to request name
+  const ids_map = {
+    filenamedate: "filename_date",
+    filenametitle: "filename_title",
+  };
 
   // iterate over each checkbox
   checkboxes.forEach((c) => {
-    let req = {};
-    req[c.id] = true;
+    // get element id
+    const element_id = ids_map[c.id];
+    let request = {};
+    request[element_id] = true;
+
     // load previous checked state (defaults to true)
-    chrome.storage.local.get(req).then((v) => {
-      c.checked = v[c.id];
+    chrome.storage.local.get(request).then((storage) => {
+      c.checked = storage[element_id];
     });
 
     // add listener to save to storage
     c.addEventListener("change", (event) => {
-      let req = {};
-      // TODO might want to find a way to sanitize this
-      req[event.target.id] = event.target.checked;
-      chrome.storage.local.set(req);
+      const element_id = ids_map[event.target.id];
+      let request = {};
+      request[element_id] = event.target.checked;
+      chrome.storage.local.set(request);
     });
   });
 };
@@ -64,4 +75,5 @@ chrome.runtime.onMessage.addListener((message) => {
   }
 });
 
+// entry point
 main();
