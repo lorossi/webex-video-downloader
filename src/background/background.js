@@ -192,8 +192,13 @@ chrome.runtime.onMessage.addListener(async (message, sender) => {
       // popup asked to get the current and latest version
       // send message to popup
       fetchVersions()
-        .then((version) => (version.action = "post_version"))
-        .then((version) => chrome.runtime.sendMessage(version));
+        .then((version) => {
+          version.action = "post_version";
+          return version;
+        })
+        .then((version) => {
+          chrome.runtime.sendMessage(version);
+        });
       break;
 
     default:
