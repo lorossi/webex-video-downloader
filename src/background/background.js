@@ -177,7 +177,7 @@ const getUpdate = async () => {
 
 // request listener
 chrome.webRequest.onCompleted.addListener(passRequest, {
-  urls: ["https://politecnicomilano.webex.com/*"],
+  urls: ["https://*.webex.com/*"],
 });
 
 // listener for message handler - used to communicate from content to background
