@@ -121,7 +121,7 @@ const getLatestVersion = async () => {
  * @returns {bool} true if version_1 if newer than version 2
  */
 const checkUpdateAvailable = (version_1, version_2) => {
-  const str_to_arr = (str) => {
+  const parse_version = (str) => {
     return str
       .concat(".0")
       .replace("v", "")
@@ -129,12 +129,13 @@ const checkUpdateAvailable = (version_1, version_2) => {
       .map((i) => parseInt(i));
   };
   // new
-  const v1 = str_to_arr(version_1);
+  const v1 = parse_version(version_1);
   // old
-  const v2 = str_to_arr(version_2);
+  const v2 = parse_version(version_2);
 
   for (let i = 0; i < 3; i++) {
     if (v1[i] > v2[i]) return true;
+    if (v2[i] < v1[i]) return false;
   }
 
   return false;
