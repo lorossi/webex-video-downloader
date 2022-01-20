@@ -1,14 +1,22 @@
 /**
  * Check if a new version has come out and if so updates the span in the popup
+ * with a link and the name of the new version
+ *
+ * @param {str} latest_version
  */
-const setUpdate = () => {
+const setUpdate = (latest_version) => {
   const update_span = document.querySelector("#updateavailable");
-  update_span.innerHTML = "New version available";
+  update_span.innerHTML = `New version available: ${latest_version}`;
   update_span.href =
     "https://github.com/lorossi/polimi-webex-downloader/releases/latest";
   update_span.target = "_blank";
 };
 
+/**
+ * Sets the current version in a span in the popup
+ *
+ * @param {str} current_version
+ */
 const setCurrentVersion = (current_version) => {
   // put current version in popup
   const version_span = document.querySelector("#currentversion");
@@ -48,8 +56,7 @@ chrome.runtime.onMessage.addListener((message) => {
     case "version":
       // background answered version question message
       setCurrentVersion(message.currentversion);
-      if (message.updateavailable) setUpdate();
-
+      if (message.updateavailable) setUpdate(message.latestversion);
       break;
 
     default:

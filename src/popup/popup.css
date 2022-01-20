@@ -8,6 +8,14 @@ p {
   margin-block-end: 0;
 }
 
+a {
+  color: blue;
+}
+
+a:visited {
+  color: blue;
+}
+
 .title {
   font-size: 1.5rem;
 }
