@@ -1,5 +1,6 @@
 let request_queue = new Array(0); // urls to get
 let elaborated_tab_ids = new Array(0); // tabs in which the button was added
+let last_fetched = 0; // epoch of last version fetch
 
 /**
  * Makes a request via fetch() and returns parsed JSON
@@ -68,7 +69,7 @@ const passRequest = async (request) => {
 
       // pass message to tab
       chrome.tabs.sendMessage(tab_id, {
-        action: "prepare-download",
+        action: "prepare_download",
         data: data,
       });
     }
@@ -90,6 +91,12 @@ const removeElaborated = (tab_id) => {
 };
 
 /**
+ * @returns {str} current version
+ *
+ */
+const getCurrentVersion = () => `v${chrome.runtime.getManifest().version}`;
+
+/**
  *
  * @returns {str} last published version
  */
@@ -104,12 +111,6 @@ const getLatestVersion = async () => {
   const data = await response.json();
   return data[0].name;
 };
-
-/**
- * @returns {str} current version
- *
- */
-const getCurrentVersion = () => `v${chrome.runtime.getManifest().version}`;
 
 /**
  * Check if an update is available by comparing the two versions
@@ -138,6 +139,39 @@ const checkUpdateAvailable = (version_1, version_2) => {
   return false;
 };
 
+/**
+ * Fetches versions either from storage or from remote url
+ *
+ * @returns {obj} versions obj
+ */
+const fetchVersions = async () => {
+  let current_version, latest_version, update_available;
+
+  if (new Date().getTime() > last_fetched + 1800) {
+    last_fetched = new Date().getTime();
+    current_version = getCurrentVersion();
+    latest_version = await getLatestVersion();
+    update_available = await checkUpdateAvailable(
+      latest_version,
+      current_version
+    );
+
+    chrome.storage.local.set({
+      current_version: current_version,
+      latest_version: latest_version,
+      update_available: update_available,
+    });
+
+    return { current_version, latest_version, update_available };
+  }
+
+  return chrome.storage.local
+    .get(["current_version", "latest_version", "update_available"])
+    .then((v) => {
+      return v;
+    });
+};
+
 // request listener
 chrome.webRequest.onCompleted.addListener(passRequest, {
   urls: ["https://politecnicomilano.webex.com/*"],
@@ -146,7 +180,7 @@ chrome.webRequest.onCompleted.addListener(passRequest, {
 // listener for message handler - used to communicate from content to background
 chrome.runtime.onMessage.addListener(async (message, sender) => {
   switch (message.action) {
-    case "file-download":
+    case "file_download":
       // content asked to download a file
       chrome.downloads.download({
         url: message.url,
@@ -154,21 +188,12 @@ chrome.runtime.onMessage.addListener(async (message, sender) => {
       });
       break;
 
-    case "get-version":
+    case "get_version":
       // popup asked to get the current and latest version
-      const current_version = getCurrentVersion();
-      const latest_version = await getLatestVersion();
-      const update_available = await checkUpdateAvailable(
-        latest_version,
-        current_version
-      );
       // send message to popup
-      chrome.runtime.sendMessage({
-        action: "version",
-        currentversion: current_version,
-        latestversion: latest_version,
-        updateavailable: update_available,
-      });
+      fetchVersions()
+        .then((version) => (version.action = "post_version"))
+        .then((version) => chrome.runtime.sendMessage(version));
       break;
 
     default:
