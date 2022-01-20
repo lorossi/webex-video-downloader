@@ -1,6 +1,7 @@
 let request_queue = new Array(0); // urls to get
 let elaborated_tab_ids = new Array(0); // tabs in which the button was added
 let last_fetched = 0; // epoch of last version fetch
+const FETCH_INTERVAL = 1800; // number of seconds between latest version fetches
 
 /**
  * Makes a request via fetch() and returns parsed JSON
@@ -144,10 +145,11 @@ const checkUpdateAvailable = (version_1, version_2) => {
  *
  * @returns {obj} versions obj
  */
-const fetchVersions = async () => {
+const getUpdate = async () => {
   let current_version, latest_version, update_available;
 
-  if (new Date().getTime() > last_fetched + 1800) {
+  if (new Date().getTime() > last_fetched + FETCH_INTERVAL) {
+    // if enough time has passed, fetch again everything
     last_fetched = new Date().getTime();
     current_version = getCurrentVersion();
     latest_version = await getLatestVersion();
@@ -155,7 +157,7 @@ const fetchVersions = async () => {
       latest_version,
       current_version
     );
-
+    // save into storage
     chrome.storage.local.set({
       current_version: current_version,
       latest_version: latest_version,
@@ -165,11 +167,12 @@ const fetchVersions = async () => {
     return { current_version, latest_version, update_available };
   }
 
-  return chrome.storage.local
-    .get(["current_version", "latest_version", "update_available"])
-    .then((v) => {
-      return v;
-    });
+  // otherwise, just load from storage
+  return chrome.storage.local.get([
+    "current_version",
+    "latest_version",
+    "update_available",
+  ]);
 };
 
 // request listener
@@ -191,9 +194,19 @@ chrome.runtime.onMessage.addListener(async (message, sender) => {
     case "get_version":
       // popup asked to get the current and latest version
       // send message to popup
-      fetchVersions()
+      const current_version = getCurrentVersion();
+
+      chrome.runtime.sendMessage({
+        action: "post_version",
+        current_version: current_version,
+      });
+
+      break;
+
+    case "get_update":
+      getUpdate()
         .then((version) => {
-          version.action = "post_version";
+          version.action = "post_update";
           return version;
         })
         .then((version) => {

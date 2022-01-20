@@ -28,6 +28,9 @@ const main = () => {
   chrome.runtime.sendMessage({
     action: "get_version",
   });
+  chrome.runtime.sendMessage({
+    action: "get_update",
+  });
 
   // select checkboxes from popup
   const checkboxes = document.querySelectorAll(
@@ -67,6 +70,9 @@ chrome.runtime.onMessage.addListener((message) => {
     case "post_version":
       // background answered version question message
       setCurrentVersion(message.current_version);
+      break;
+
+    case "post_update":
       if (message.update_available) setUpdate(message.latest_version);
       break;
 
